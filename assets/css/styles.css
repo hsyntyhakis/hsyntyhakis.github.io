@@ -603,6 +603,15 @@ section {
   gap: var(--spacing-sm);
 }
 
+.contact-item i {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+.contact-item p {
+  margin: 0;
+}
+
 .center-aligned .contact-item {
   justify-content: center;
 }
