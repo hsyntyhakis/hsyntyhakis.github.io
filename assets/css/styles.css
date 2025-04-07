@@ -584,63 +584,33 @@ section {
 /* Contact Section */
 .contact-content {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-lg);
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
 }
 
-.contact-form {
-  flex: 1;
-  min-width: 300px;
-}
-
-.form-group {
-  margin-bottom: var(--spacing-md);
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 600;
-}
-
-.form-group input, .form-group textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  font-family: var(--body-font);
-  font-size: 1rem;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  transition: border-color var(--transition-fast);
-}
-
-.form-group input:focus, .form-group textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-}
-
-.contact-info {
-  flex: 1;
-  min-width: 300px;
+.contact-info.center-aligned {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  margin-bottom: var(--spacing-md);
+  gap: var(--spacing-sm);
 }
 
-.contact-item i {
-  font-size: 1.5rem;
-  color: var(--primary-color);
-  margin-right: var(--spacing-sm);
+.center-aligned .contact-item {
+  justify-content: center;
 }
 
 .social-links {
   display: flex;
-  gap: var(--spacing-sm);
-  margin-top: var(--spacing-lg);
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
 }
 
 .social-link {
