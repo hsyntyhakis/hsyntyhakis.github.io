@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haris Syntyhakis - Product Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="#hero">HS</a>
+            </div>
+            <div class="navbar-menu">
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="mobile-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div id="particles-js"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-image" data-aos="fade-right">
+                    <img src="assets/images/profile.jpeg" alt="Haris Syntyhakis">
+                </div>
+                <div class="hero-text" data-aos="fade-left">
+                    <h1>Haris Syntyhakis</h1>
+                    <h2>Product Manager</h2>
+                    <p>Driving product innovation with technical expertise and AI-powered solutions</p>
+                    <div class="hero-cta">
+                        <a href="#contact" class="btn btn-primary">Get in Touch</a>
+                        <a href="#experience" class="btn btn-secondary">View My Work</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>About Me</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="about-content">
+                <div class="about-text" data-aos="fade-up" data-aos-delay="100">
+                    <p>Product Manager with a technical background, focused on AI-powered solutions. Skilled at driving cross-functional alignment and getting things done.</p>
+                    <p>With experience spanning from software development to product management, I've led teams to deliver impactful products across various industries including localization, telecommunications, and digital marketplaces.</p>
+                    <p>I'm passionate about leveraging AI/ML technologies to solve real business problems and create exceptional user experiences.</p>
+                </div>
+                <div class="about-highlights" data-aos="fade-up" data-aos-delay="200">
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="highlight-text">
+                            <h3>Data-Driven</h3>
+                            <p>Making decisions based on qualitative and quantitative data</p>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="highlight-text">
+                            <h3>AI Expertise</h3>
+                            <p>Implementing AI-powered solutions that deliver real value</p>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="highlight-text">
+                            <h3>Team Leader</h3>
+                            <p>Leading cross-functional teams to achieve business goals</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Professional Experience</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="timeline">
+                <!-- Timeline items will be generated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Skills & Expertise</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="skills-content">
+                <div class="skills-chart" data-aos="fade-right">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+                <div class="skills-categories" data-aos="fade-left">
+                    <div class="skills-category">
+                        <h3>Technical Skills</h3>
+                        <div class="skills-list" id="technical-skills">
+                            <!-- Skills will be generated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="skills-category">
+                        <h3>Soft Skills</h3>
+                        <div class="skills-list" id="soft-skills">
+                            <!-- Skills will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="education">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Education & Certifications</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="education-content">
+                <div class="education-column" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Academic Background</h3>
+                    <div class="education-items" id="education-items">
+                        <!-- Education items will be generated by JavaScript -->
+                    </div>
+                </div>
+                <div class="certifications-column" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Professional Certifications</h3>
+                    <div class="certification-items" id="certification-items">
+                        <!-- Certification items will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Personal Projects</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="coming-soon" data-aos="zoom-in">
+                <div class="coming-soon-content">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Coming Soon</h3>
+                    <p>Exciting projects are in the works. Check back later for updates!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Get In Touch</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="contact-content">
+                <div class="contact-form" data-aos="fade-right">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+                <div class="contact-info" data-aos="fade-left">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>Email me at <a href="mailto:contact@example.com">contact@example.com</a></p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Based in Greece</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Haris Syntyhakis. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#hero">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#experience">Experience</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="assets/js/resume-data.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/interactive.js"></script>
+</body>
+</html>
