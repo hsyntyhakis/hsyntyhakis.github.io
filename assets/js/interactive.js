@@ -276,8 +276,6 @@ function initParticles() {
     });
 }
 
-// Override the initParticles function in main.js
-document.addEventListener('DOMContentLoaded', function() {
-  // Replace the original initParticles function
-  window.initParticles = initParticles;
-});
+// Override the initParticles function in main.js before DOMContentLoaded fires
+// so that main.js uses this version when initializing the particles background
+window.initParticles = initParticles;
