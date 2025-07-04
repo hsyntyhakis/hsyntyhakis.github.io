@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit</title>
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {font-family: Arial, sans-serif; background-color: #f5f5f5; color: #333;}
+        .wireframe-box {border: 2px solid #333; background-color: white; position: relative;}
+        .wireframe-text {background-color: #e0e0e0; height: 20px; margin: 5px 0;}
+        .wireframe-button {background-color: #ccc; border: 1px solid #999; padding: 8px 16px; cursor: pointer;}
+        .header {height: 60px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #333;}
+        .logo {width: 120px; height: 30px; background-color: #333;}
+        .nav-items {display: flex; gap: 20px;}
+        .nav-item {width: 80px; height: 20px; background-color: #ccc;}
+        .user-actions {display: flex; gap: 10px;}
+        .main-content {display: flex; min-height: calc(100vh - 60px);}
+        .sidebar {width: 250px; padding: 20px; border-right: 2px solid #333;}
+        .sidebar-section {margin-bottom: 30px;}
+        .sidebar-title {height: 25px; background-color: #333; margin-bottom: 10px;}
+        .sidebar-item {height: 18px; background-color: #e0e0e0; margin-bottom: 5px;}
+        .sports-content {flex: 1; padding: 20px;}
+        .content-header {display: flex; align-items: center; margin-bottom: 20px;}
+        .page-title {width: 200px; height: 30px; background-color: #333;}
+        .filters {display: flex; gap: 10px; margin-left: auto;}
+        .filter-item {width: 80px; height: 25px; background-color: #ccc;}
+        .deposit-section {margin: 60px auto 0 auto; max-width: 480px; padding: 25px 30px 20px 30px; border: 2px solid #333; border-radius: 10px; background: #fff;}
+        .deposit-title {font-size: 1.25rem; font-weight: bold; margin-bottom: 20px;}
+        .deposit-methods {display: flex; flex-direction: column; gap: 13px; margin-bottom: 24px;}
+        .deposit-method {display: flex; align-items: center; gap: 18px; background: #f0f0f0; border: 2px solid #ccc; border-radius: 6px; height: 48px; cursor: pointer; transition: all 0.15s; padding: 0 15px;}
+        .deposit-method.selected, .deposit-method:hover {border-color: #333; background: #e0e0e0;}
+        .method-icon {width: 36px; height: 36px; background: #999; border-radius: 50%;}
+        .method-label {height: 16px; width: 110px; background: #333;}
+        .method-desc {height: 14px; width: 60px; background: #e0e0e0; margin-left: 10px;}
+        .deposit-form-row {display: flex; align-items: center; gap: 16px; margin: 20px 0 16px 0;}
+        .deposit-label {width: 75px; height: 15px; background: #e0e0e0;}
+        .deposit-input {height: 38px; width: 110px; background: #f0f3fa; border: 2px solid #bcc9df; border-radius: 6px; padding: 0 10px; font-size: 1.1rem;}
+        .deposit-input:focus {outline: none; border-color: #333;}
+        .deposit-continue {width: 100%; height: 44px; background: #333; color: #fff; border: none; border-radius: 7px; margin-top: 18px; cursor: pointer; font-weight: bold; font-size: 1.1rem;}
+        .deposit-continue:disabled {background: #ccc; cursor: not-allowed;}
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            border: 2px solid #333;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transition: height 0.3s ease;
+        }
+        
+        .chat-widget.minimized {
+            height: 50px;
+        }
+        
+        .chat-widget.minimized .chat-messages,
+        .chat-widget.minimized .chat-input {
+            display: none;
+        }
+        
+        .chat-header {height: 50px; background-color: #333; color: white; display: flex; align-items: center; padding: 0 15px; justify-content: space-between; border-radius: 8px 8px 0 0;}
+        .chat-title {font-weight: bold;}
+        .chat-controls {display: flex; gap: 10px;}
+        .chat-button {width: 20px; height: 20px; background-color: #666; border: none; border-radius: 3px; cursor: pointer;}
+        .chat-messages {flex: 1; padding: 15px; overflow-y: auto; background-color: #f9f9f9;}
+        .message {margin-bottom: 15px; padding: 10px; border-radius: 8px; max-width: 80%;}
+        .message.agent {background-color: #e3f2fd; border: 1px solid #90caf9;}
+        .message.user {background-color: #f3e5f5; border: 1px solid #ce93d8; margin-left: auto;}
+        .message-text {height: 15px; background-color: #333; margin-bottom: 5px;}
+        .message-text.short {width: 60%;}
+        .message-text.long {width: 90%;}
+        .chat-input {height: 50px; padding: 10px; border-top: 1px solid #ddd; display: flex; gap: 10px;}
+        .input-field {flex: 1; height: 30px; background-color: #f0f0f0; border: 1px solid #ccc;}
+        .send-button {width: 60px; height: 30px; background-color: #333; color: white; border: none; cursor: pointer;}
+        .annotation {position: absolute; font-size: 12px; color: #666; background: rgba(255,255,255,0.8); padding: 2px 5px; border-radius: 3px;}
+        .chat-pos {top: -20px; left: 0;}
+        .persistent {bottom: -20px; left: 0;}
+        @media (max-width: 768px) {.sidebar {width: 200px;}}
+    </style>
+</head>
+<body>
+    <div class="header wireframe-box">
+        <div class="logo"></div>
+        <div class="nav-items">
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+        </div>
+        <div class="user-actions">
+            <div class="wireframe-button">Login</div>
+            <div class="wireframe-button">Sign Up</div>
+        </div>
+    </div>
+    <div class="main-content">
+        <!-- Sidebar -->
+        <div class="sidebar wireframe-box">
+            <div class="sidebar-section">
+                <div class="sidebar-title"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+            </div>
+        </div>
+        <div class="sports-content">
+            <div class="deposit-section wireframe-box">
+                <div class="deposit-title">Deposit</div>
+                <div class="deposit-methods">
+                    <div class="deposit-method selected" onclick="selectMethod(this)">
+                        <div class="method-icon"></div>
+                        <div class="method-label"></div>
+                        <div class="method-desc"></div>
+                    </div>
+                    <div class="deposit-method" onclick="selectMethod(this)">
+                        <div class="method-icon"></div>
+                        <div class="method-label"></div>
+                        <div class="method-desc"></div>
+                    </div>
+                </div>
+                <div class="deposit-form-row">
+                    <div class="deposit-label"></div>
+                    <input type="number" class="deposit-input" min="5" placeholder="Amount..." oninput="updateContinueState()" />
+                </div>
+                <button class="deposit-continue" onclick="continueToConfirmation()" disabled>Continue</button>
+            </div>
+        </div>
+    </div>
+    <!-- AI Chat Widget -->
+    <div class="chat-widget" id="chatWidget">
+        <div class="annotation chat-pos">Bottom Right Position</div>
+        <div class="annotation persistent">Persistent Widget</div>
+        
+        <div class="chat-header">
+            <div class="chat-title">Betting Assistant</div>
+            <div class="chat-controls">
+                <button class="chat-button" onclick="minimizeChat()">_</button>
+                <button class="chat-button" onclick="closeChat()">×</button>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message agent">
+                <div class="message-text long"></div>
+                <div class="message-text short"></div>
+            </div>
+            <div class="message agent">
+                Please select a deposit method, enter an amount, and click Continue.<br>If you need help, just ask here!
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" class="input-field" placeholder="Type your message...">
+            <button class="send-button">Send</button>
+        </div>
+    </div>
+    <script>
+        function selectMethod(methodElement) {
+            document.querySelectorAll('.deposit-method').forEach(option => {
+                option.classList.remove('selected');
+            });
+            methodElement.classList.add('selected');
+            updateContinueState();
+        }
+        
+        function updateContinueState() {
+            const input = document.querySelector('.deposit-input');
+            const btn = document.querySelector('.deposit-continue');
+            btn.disabled = !input.value || Number(input.value) < 5;
+        }
+        
+        function continueToConfirmation() {
+            // Navigate to bet placed confirmation page
+            window.location.href = '6-bet_placed_confirmation.html';
+        }
+        
+        // Chat widget functions
+        function minimizeChat() {
+            const chatWidget = document.getElementById('chatWidget');
+            chatWidget.classList.toggle('minimized');
+        }
+        
+        function closeChat() {
+            const chatWidget = document.getElementById('chatWidget');
+            chatWidget.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

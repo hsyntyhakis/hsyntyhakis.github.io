@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bet Confirmation</title>
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {font-family: Arial, sans-serif; background-color: #f5f5f5; color: #333;}
+        .wireframe-box {border: 2px solid #333; background-color: white; position: relative;}
+        .wireframe-text {background-color: #e0e0e0; height: 20px; margin: 5px 0;}
+        .wireframe-button {background-color: #ccc; border: 1px solid #999; padding: 8px 16px; cursor: pointer;}
+        .header {height: 60px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #333;}
+        .logo {width: 120px; height: 30px; background-color: #333;}
+        .nav-items {display: flex; gap: 20px;}
+        .nav-item {width: 80px; height: 20px; background-color: #ccc;}
+        .user-actions {display: flex; gap: 10px;}
+        .main-content {display: flex; min-height: calc(100vh - 60px);}
+        .sidebar {width: 250px; padding: 20px; border-right: 2px solid #333;}
+        .sidebar-section {margin-bottom: 30px;}
+        .sidebar-title {height: 25px; background-color: #333; margin-bottom: 10px;}
+        .sidebar-item {height: 18px; background-color: #e0e0e0; margin-bottom: 5px;}
+        .sports-content {flex: 1; padding: 20px;}
+        .confirmation-section {margin: 60px auto 0 auto; max-width: 520px; padding: 25px 30px 20px 30px; border: 2px solid #333; border-radius: 10px; background: #fff; text-align: center;}
+        .success-icon {width: 48px; height: 48px; background: #28ca60; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px auto; font-size: 2rem; color: #fff;}
+        .confirmation-title {font-size: 1.25rem; font-weight: bold; margin-bottom: 10px;}
+        .confirmation-desc {font-size: 1.08rem; color: #444; margin-bottom: 20px;}
+        .bet-summary {background: #f6f8fc; border: 1px solid #ccd8ec; border-radius: 8px; padding: 14px 16px 12px 16px; margin-bottom: 22px; text-align: left;}
+        .bet-summary-row {display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;}
+        .bet-label {color: #666; font-size: 1rem;}
+        .bet-value {color: #333; font-size: 1rem; font-weight: bold;}
+        .next-actions {display: flex; flex-direction: column; gap: 10px; margin-top: 8px;}
+        .next-action-btn {height: 38px; background: #333; color: #fff; border: none; border-radius: 7px; font-weight: bold; font-size: 1rem; cursor: pointer;}
+        .next-action-btn.secondary {background: #e0e0e0; color: #333; border: 1px solid #aaa;}
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            border: 2px solid #333;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transition: height 0.3s ease;
+        }
+        
+        .chat-widget.minimized {
+            height: 50px;
+        }
+        
+        .chat-widget.minimized .chat-messages,
+        .chat-widget.minimized .chat-input {
+            display: none;
+        }
+        
+        .chat-header {height: 50px; background-color: #333; color: white; display: flex; align-items: center; padding: 0 15px; justify-content: space-between; border-radius: 8px 8px 0 0;}
+        .chat-title {font-weight: bold;}
+        .chat-controls {display: flex; gap: 10px;}
+        .chat-button {width: 20px; height: 20px; background-color: #666; border: none; border-radius: 3px; cursor: pointer;}
+        .chat-messages {flex: 1; padding: 15px; overflow-y: auto; background-color: #f9f9f9;}
+        .message {margin-bottom: 15px; padding: 10px; border-radius: 8px; max-width: 80%;}
+        .message.agent {background-color: #e3f2fd; border: 1px solid #90caf9;}
+        .message.user {background-color: #f3e5f5; border: 1px solid #ce93d8; margin-left: auto;}
+        .message-text {height: 15px; background-color: #333; margin-bottom: 5px;}
+        .message-text.short {width: 60%;}
+        .message-text.long {width: 90%;}
+        .chat-input {height: 50px; padding: 10px; border-top: 1px solid #ddd; display: flex; gap: 10px;}
+        .input-field {flex: 1; height: 30px; background-color: #f0f0f0; border: 1px solid #ccc;}
+        .send-button {width: 60px; height: 30px; background-color: #333; color: white; border: none; cursor: pointer;}
+        .annotation {position: absolute; font-size: 12px; color: #666; background: rgba(255,255,255,0.8); padding: 2px 5px; border-radius: 3px;}
+        .chat-pos {top: -20px; left: 0;}
+        .persistent {bottom: -20px; left: 0;}
+        @media (max-width: 768px) {.sidebar {width: 200px;}}
+    </style>
+</head>
+<body>
+    <div class="header wireframe-box">
+        <div class="logo"></div>
+        <div class="nav-items">
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+        </div>
+        <div class="user-actions">
+            <div class="wireframe-button">Login</div>
+            <div class="wireframe-button">Sign Up</div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="sidebar wireframe-box">
+            <div class="sidebar-section">
+                <div class="sidebar-title"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+            </div>
+        </div>
+        <div class="sports-content">
+            <div class="confirmation-section wireframe-box">
+                <div class="success-icon">✓</div>
+                <div class="confirmation-title">Bet Placed Successfully!</div>
+                <div class="confirmation-desc">Congratulations! Your bet has been placed.<br>Here’s a summary:</div>
+                <div class="bet-summary">
+                    <div class="bet-summary-row"><span class="bet-label">Match:</span> <span class="bet-value">Manchester United vs Liverpool</span></div>
+                    <div class="bet-summary-row"><span class="bet-label">Bet Type:</span> <span class="bet-value">1X2 - Home Win</span></div>
+                    <div class="bet-summary-row"><span class="bet-label">Stake:</span> <span class="bet-value">€10</span></div>
+                    <div class="bet-summary-row"><span class="bet-label">Odds:</span> <span class="bet-value">2.15</span></div>
+                    <div class="bet-summary-row"><span class="bet-label">Potential Return:</span> <span class="bet-value">€21.50</span></div>
+                </div>
+                <div class="next-actions">
+                    <button class="next-action-btn">Track My Bet</button>
+                    <button class="next-action-btn secondary">See Tips for New Users</button>
+                    <button class="next-action-btn secondary">Deposit Bonus Info</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- AI Chat Widget -->
+    <div class="chat-widget" id="chatWidget">
+        <div class="annotation chat-pos">Bottom Right Position</div>
+        <div class="annotation persistent">Persistent Widget</div>
+        
+        <div class="chat-header">
+            <div class="chat-title">Betting Assistant</div>
+            <div class="chat-controls">
+                <button class="chat-button" onclick="minimizeChat()">_</button>
+                <button class="chat-button" onclick="closeChat()">×</button>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message agent">
+                <div class="message-text long"></div>
+                <div class="message-text short"></div>
+            </div>
+            <div class="message agent">
+                Your bet was placed! Click 'Track My Bet' to see its status. Need anything else? Just ask here.
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" class="input-field" placeholder="Type your message...">
+            <button class="send-button">Send</button>
+        </div>
+    </div>
+    <script>
+        // Chat widget functions
+        function minimizeChat() {
+            const widget = document.getElementById('chatWidget');
+            widget.classList.toggle('minimized');
+        }
+        
+        function closeChat() {
+            const widget = document.getElementById('chatWidget');
+            widget.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

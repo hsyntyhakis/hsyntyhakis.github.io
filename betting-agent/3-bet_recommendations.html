@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bet Recommendations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Wireframe styling */
+        .wireframe-box {
+            border: 2px solid #333;
+            background-color: white;
+            position: relative;
+        }
+        
+        .wireframe-text {
+            background-color: #e0e0e0;
+            height: 20px;
+            margin: 5px 0;
+        }
+        
+        .wireframe-button {
+            background-color: #ccc;
+            border: 1px solid #999;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+        
+        /* Header */
+        .header {
+            height: 60px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #333;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 30px;
+            background-color: #333;
+        }
+        
+        .nav-items {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-item {
+            width: 80px;
+            height: 20px;
+            background-color: #ccc;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* Main content - dimmed background */
+        .main-content {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            position: relative;
+        }
+        
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 500;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            padding: 20px;
+            border-right: 2px solid #333;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-title {
+            height: 25px;
+            background-color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-item {
+            height: 18px;
+            background-color: #e0e0e0;
+            margin-bottom: 5px;
+        }
+        
+        /* Sports content */
+        .sports-content {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            width: 200px;
+            height: 30px;
+            background-color: #333;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+        
+        .filter-item {
+            width: 80px;
+            height: 25px;
+            background-color: #ccc;
+        }
+        
+        /* Match cards */
+        .matches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .match-card {
+            height: 120px;
+            padding: 15px;
+            position: relative;
+        }
+        
+        .match-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .teams {
+            width: 180px;
+            height: 20px;
+            background-color: #333;
+        }
+        
+        .match-time {
+            width: 80px;
+            height: 15px;
+            background-color: #ccc;
+        }
+        
+        .odds-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .odds-button {
+            width: 60px;
+            height: 35px;
+            background-color: #e0e0e0;
+            border: 1px solid #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* Chat Widget - Recommendations View */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 500px;
+            height: 650px;
+            border: 3px solid #333;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transition: height 0.3s ease;
+        }
+        
+        .chat-widget.minimized {
+            height: 60px;
+        }
+        
+        .chat-widget.minimized .chat-messages,
+        .chat-widget.minimized .chat-input {
+            display: none;
+        }
+        
+        .chat-header {
+            height: 50px;
+            background-color: #333;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            justify-content: space-between;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .chat-title {
+            font-weight: bold;
+        }
+        
+        .chat-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-button {
+            width: 20px;
+            height: 20px;
+            background-color: #666;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 90%;
+        }
+        
+        .message.agent {
+            background-color: #e3f2fd;
+            border: 1px solid #90caf9;
+        }
+        
+        .message.user {
+            background-color: #f3e5f5;
+            border: 1px solid #ce93d8;
+            margin-left: auto;
+        }
+        
+        .message-text {
+            height: 15px;
+            background-color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .message-text.short {
+            width: 60%;
+        }
+        
+        .message-text.medium {
+            width: 75%;
+        }
+        
+        .message-text.long {
+            width: 90%;
+        }
+        
+        /* Recommendations UI */
+        .recommendations-section {
+            margin-top: 15px;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid #333;
+            border-radius: 8px;
+        }
+        
+        .recommendations-title {
+            height: 20px;
+            background-color: #333;
+            margin-bottom: 20px;
+            width: 85%;
+        }
+        
+        .user-preferences {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        
+        .preference-tag {
+            background-color: #333;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        
+        .recommended-matches {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .recommended-match {
+            background-color: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .recommended-match:hover {
+            border-color: #333;
+            background-color: #f0f0f0;
+        }
+        
+        .recommended-match.selected {
+            border-color: #333;
+            background-color: #e8f5e8;
+        }
+        
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .match-teams {
+            width: 200px;
+            height: 18px;
+            background-color: #333;
+        }
+        
+        .match-time-date {
+            width: 80px;
+            height: 12px;
+            background-color: #666;
+        }
+        
+        .match-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .match-league {
+            width: 120px;
+            height: 12px;
+            background-color: #999;
+        }
+        
+        .recommended-badge {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .simple-bet-options {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .simple-bet {
+            flex: 1;
+            height: 35px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .simple-bet:hover {
+            border-color: #333;
+            background-color: #f0f0f0;
+        }
+        
+        .simple-bet.selected {
+            border-color: #333;
+            background-color: #333;
+            color: white;
+        }
+        
+        .bet-label {
+            font-size: 10px;
+            height: 8px;
+            background-color: #666;
+            width: 20px;
+            margin-bottom: 3px;
+        }
+        
+        .simple-bet.selected .bet-label {
+            background-color: white;
+        }
+        
+        .bet-odds {
+            font-size: 11px;
+            height: 10px;
+            background-color: #333;
+            width: 25px;
+        }
+        
+        .simple-bet.selected .bet-odds {
+            background-color: white;
+        }
+        
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .show-more-btn {
+            flex: 1;
+            height: 40px;
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .show-more-btn:hover {
+            background-color: #e0e0e0;
+            border-color: #999;
+        }
+        
+        .place-bet-btn {
+            flex: 2;
+            height: 40px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .place-bet-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Progress indicator */
+        .progress-indicator {
+            height: 4px;
+            background-color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #333;
+            width: 75%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Annotations */
+        .annotation {
+            position: absolute;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 1001;
+        }
+        
+        .annotation.personalized {
+            top: -30px;
+            left: 0;
+        }
+        
+        .annotation.simple-bets {
+            top: 150px;
+            left: -120px;
+        }
+        
+        .annotation.fallback {
+            bottom: 60px;
+            left: -100px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chat-widget {
+                width: calc(100vw - 20px);
+                height: calc(100vh - 100px);
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+            }
+            
+            .recommended-matches {
+                gap: 10px;
+            }
+            
+            .simple-bet-options {
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header wireframe-box">
+        <div class="logo"></div>
+        <div class="nav-items">
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+        </div>
+        <div class="user-actions">
+            <div class="wireframe-button">Login</div>
+            <div class="wireframe-button">Sign Up</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Background overlay to dim content -->
+        <div class="background-overlay"></div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar wireframe-box">
+            <div class="sidebar-section">
+                <div class="sidebar-title"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+                <div class="sidebar-item"></div>
+            </div>
+        </div>
+
+        <!-- Sports Content -->
+        <div class="sports-content">
+            <div class="content-header">
+                <div class="page-title"></div>
+                <div class="filters">
+                    <div class="filter-item"></div>
+                    <div class="filter-item"></div>
+                    <div class="filter-item"></div>
+                </div>
+            </div>
+
+            <!-- Matches Grid -->
+            <div class="matches-grid">
+                <div class="match-card wireframe-box">
+                    <div class="match-info">
+                        <div class="teams"></div>
+                        <div class="match-time"></div>
+                    </div>
+                    <div class="odds-row">
+                        <div class="odds-button">1</div>
+                        <div class="odds-button">X</div>
+                        <div class="odds-button">2</div>
+                    </div>
+                </div>
+                
+                <div class="match-card wireframe-box">
+                    <div class="match-info">
+                        <div class="teams"></div>
+                        <div class="match-time"></div>
+                    </div>
+                    <div class="odds-row">
+                        <div class="odds-button">1</div>
+                        <div class="odds-button">X</div>
+                        <div class="odds-button">2</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Widget - Bet Recommendations -->
+    <div class="chat-widget" id="chatWidget">
+        <div class="annotation personalized">Personalized Based on Preferences</div>
+        <div class="annotation simple-bets">Simple Win/Draw Options</div>
+        <div class="annotation fallback">Fallback Option</div>
+        
+        <div class="chat-header">
+            <div class="chat-title">Betting Assistant</div>
+            <div class="chat-controls">
+                <button class="chat-button" onclick="minimizeChat()" title="Minimize">−</button>
+                <button class="chat-button" onclick="closeChat()" title="Close">×</button>
+            </div>
+        </div>
+        
+        <div class="chat-messages">
+            <!-- Progress indicator -->
+            <div class="progress-indicator">
+                <div class="progress-bar"></div>
+            </div>
+            
+            <!-- Agent message -->
+            <div class="message agent">
+                <div class="message-text long"></div>
+                <div class="message-text medium"></div>
+                <div class="message-text short"></div>
+            </div>
+            
+            <!-- Recommendations UI -->
+            <div class="recommendations-section">
+                <div class="recommendations-title"></div>
+                
+                <!-- User preferences display -->
+                <div class="user-preferences">
+                    <div class="preference-tag">⚽ Football</div>
+                    <div class="preference-tag">🏆 Manchester United</div>
+                </div>
+                
+                <!-- Recommended matches -->
+                <div class="recommended-matches">
+                    <!-- Match 1 - Selected -->
+                    <div class="recommended-match selected" onclick="selectMatch(this)">
+                        <div class="recommended-badge">Recommended</div>
+                        <div class="match-header">
+                            <div class="match-teams"></div>
+                            <div class="match-time-date"></div>
+                        </div>
+                        <div class="match-details">
+                            <div class="match-league"></div>
+                        </div>
+                        <div class="simple-bet-options">
+                            <div class="simple-bet selected" onclick="selectBet(this, event)">
+                                <div class="bet-label"></div>
+                                <div class="bet-odds"></div>
+                            </div>
+                            <div class="simple-bet" onclick="selectBet(this, event)">
+                                <div class="bet-label"></div>
+                                <div class="bet-odds"></div>
+                            </div>
+                            <div class="simple-bet" onclick="selectBet(this, event)">
+                                <div class="bet-label"></div>
+                                <div class="bet-odds"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Match 2 -->
+                    <div class="recommended-match" onclick="selectMatch(this)">
+                        <div class="recommended-badge">Recommended</div>
+                        <div class="match-header">
+                            <div class="match-teams"></div>
+                            <div class="match-time-date"></div>
+                        </div>
+                        <div class="match-details">
+                            <div class="match-league"></div>
+                        </div>
+                        <div class="simple-bet-options">
+                            <div class="simple-bet" onclick="selectBet(this, event)">
+                                <div class="bet-label"></div>
+                                <div class="bet-odds"></div>
+                            </div>
+                            <div class="simple-bet" onclick="selectBet(this, event)">
+                                <div class="bet-label"></div>
+                                <div class="bet-odds"></div>
+                            </div>
+                            <div class="simple-bet" onclick="selectBet(this, event)">
+                                <div class="bet-label"></div>
+                                <div class="bet-odds"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Match 3 -->
+                    <div class="recommended-match" onclick="selectMatch(this)">
+                        <div class="match-header">
+                            <div class="match-teams"></div>
+                            <div class="match-time-date"></div>
+                        </div>
+                        <div class="match-details">
+                            <div class="match-league"></div>
+                        </div>
+                        <div class="simple-bet-options">
+                            <div class="simple-bet" onclick="selectBet(this, event)">
+                                <div class="bet-label"></div>
+                                <div class="bet-odds"></div>
+                            </div>
+                            <div class="simple-bet" onclick="selectBet(this, event)">
+                                <div class="bet-label"></div>
+                                <div class="bet-odds"></div>
+                            </div>
+                            <div class="simple-bet" onclick="selectBet(this, event)">
+                                <div class="bet-label"></div>
+                                <div class="bet-odds"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="action-buttons">
+                    <button class="show-more-btn" onclick="showMoreMatches()">
+                        Show Me More
+                    </button>
+                    <button class="place-bet-btn" onclick="proceedToBet()">
+                        Place This Bet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function minimizeChat() {
+            const widget = document.getElementById('chatWidget');
+            widget.classList.toggle('minimized');
+        }
+        
+        function closeChat() {
+            const widget = document.getElementById('chatWidget');
+            widget.style.display = 'none';
+        }
+        
+        function selectMatch(matchElement) {
+            // Remove selected class from all matches
+            document.querySelectorAll('.recommended-match').forEach(match => {
+                match.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked match
+            matchElement.classList.add('selected');
+            
+            // Clear all bet selections
+            document.querySelectorAll('.simple-bet').forEach(bet => {
+                bet.classList.remove('selected');
+            });
+            
+            // Update place bet button state
+            updatePlaceBetButton();
+        }
+        
+        function selectBet(betElement, event) {
+            event.stopPropagation();
+            
+            // Remove selected class from all bets in this match
+            const matchElement = betElement.closest('.recommended-match');
+            matchElement.querySelectorAll('.simple-bet').forEach(bet => {
+                bet.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked bet
+            betElement.classList.add('selected');
+            
+            // Ensure match is selected
+            matchElement.classList.add('selected');
+            
+            // Update place bet button state
+            updatePlaceBetButton();
+            
+            // Update progress bar
+            document.querySelector('.progress-bar').style.width = '90%';
+        }
+        
+        function updatePlaceBetButton() {
+            const placeBetBtn = document.querySelector('.place-bet-btn');
+            const hasSelectedBet = document.querySelector('.simple-bet.selected');
+            
+            placeBetBtn.disabled = !hasSelectedBet;
+        }
+        
+        function showMoreMatches() {
+            // Simulate showing more matches
+            alert('Showing more match recommendations...');
+        }
+        
+        function proceedToBet() {
+            // Navigate to bet confirmation page
+            window.location.href = '4-bet_confirmation.html';
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePlaceBetButton();
+        });
+    </script>
+</body>
+</html>
