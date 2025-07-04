@@ -520,6 +520,27 @@
             left: -100px;
         }
         
+        /* Back ribbon */
+        .back-ribbon {
+            background-color: #f8f9fa;
+            padding: 10px 20px;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .back-ribbon a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-ribbon a:hover {
+            text-decoration: underline;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .chat-widget {
@@ -541,6 +562,11 @@
     </style>
 </head>
 <body>
+    <!-- Back Ribbon -->
+    <div class="back-ribbon">
+        <a href="index.html">← Go back to Home</a>
+    </div>
+    
     <!-- Header -->
     <div class="header wireframe-box">
         <div class="logo"></div>
