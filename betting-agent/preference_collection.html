@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sportsbook</title>
+    <title>Preference Collection</title>
     <style>
         * {
             margin: 0;
@@ -69,10 +69,21 @@
             gap: 10px;
         }
         
-        /* Main content */
+        /* Main content - dimmed background */
         .main-content {
             display: flex;
             min-height: calc(100vh - 60px);
+            position: relative;
+        }
+        
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 500;
         }
         
         /* Sidebar */
@@ -178,20 +189,29 @@
             cursor: pointer;
         }
         
-        /* Chat Widget */
+        /* Chat Widget - Expanded for Preference Collection */
         .chat-widget {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 350px;
-            height: 500px;
-            border: 2px solid #333;
+            width: 450px;
+            height: 600px;
+            border: 3px solid #333;
             background-color: white;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
             z-index: 1000;
+        }
+        
+        .chat-widget.minimized {
+            height: 60px;
+        }
+        
+        .chat-widget.minimized .chat-messages,
+        .chat-widget.minimized .chat-input {
+            display: none;
         }
         
         .chat-header {
@@ -225,16 +245,16 @@
         
         .chat-messages {
             flex: 1;
-            padding: 15px;
+            padding: 20px;
             overflow-y: auto;
             background-color: #f9f9f9;
         }
         
         .message {
-            margin-bottom: 15px;
-            padding: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
             border-radius: 8px;
-            max-width: 80%;
+            max-width: 90%;
         }
         
         .message.agent {
@@ -258,43 +278,167 @@
             width: 60%;
         }
         
+        .message-text.medium {
+            width: 75%;
+        }
+        
         .message-text.long {
             width: 90%;
         }
         
-        .chat-input {
-            height: 50px;
-            padding: 10px;
-            border-top: 1px solid #ddd;
-            display: flex;
-            gap: 10px;
+        /* Preference Collection UI */
+        .preference-section {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: white;
+            border: 2px solid #333;
+            border-radius: 8px;
         }
         
-        .input-field {
-            flex: 1;
-            height: 30px;
+        .preference-title {
+            height: 20px;
+            background-color: #333;
+            margin-bottom: 15px;
+            width: 80%;
+        }
+        
+        .sport-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .sport-option {
+            height: 40px;
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .sport-option:hover {
+            background-color: #e0e0e0;
+            border-color: #999;
+        }
+        
+        .sport-option.selected {
+            background-color: #333;
+            border-color: #333;
+            color: white;
+        }
+        
+        .sport-icon {
+            width: 25px;
+            height: 25px;
+            background-color: #999;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .sport-option.selected .sport-icon {
+            background-color: white;
+        }
+        
+        .team-selection {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .team-selection.show {
+            display: block;
+        }
+        
+        .team-search {
+            width: 100%;
+            height: 35px;
             background-color: #f0f0f0;
             border: 1px solid #ccc;
+            margin-bottom: 15px;
+            padding: 0 10px;
         }
         
-        .send-button {
-            width: 60px;
-            height: 30px;
-            background-color: #333;
-            color: white;
-            border: none;
+        .team-options {
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .team-option {
+            height: 35px;
+            background-color: white;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
             cursor: pointer;
         }
         
-        /* Minimized chat widget */
-        .chat-widget.minimized {
-            height: 60px;
-            width: 200px;
+        .team-option:hover {
+            background-color: #f0f0f0;
         }
         
-        .chat-widget.minimized .chat-messages,
-        .chat-widget.minimized .chat-input {
-            display: none;
+        .team-option.selected {
+            background-color: #333;
+            color: white;
+        }
+        
+        .team-logo {
+            width: 20px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .team-option.selected .team-logo {
+            background-color: white;
+        }
+        
+        .team-name {
+            height: 12px;
+            background-color: #333;
+            width: 120px;
+        }
+        
+        .team-option.selected .team-name {
+            background-color: white;
+        }
+        
+        .continue-button {
+            width: 100%;
+            height: 40px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .continue-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Progress indicator */
+        .progress-indicator {
+            height: 4px;
+            background-color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #333;
+            width: 33%;
+            transition: width 0.3s ease;
         }
         
         /* Annotations */
@@ -309,14 +453,19 @@
             z-index: 1001;
         }
         
-        .annotation.chat-pos {
+        .annotation.expanded {
             top: -30px;
             right: 0;
         }
         
-        .annotation.persistent {
-            top: 10px;
-            left: 10px;
+        .annotation.interactive {
+            top: 50px;
+            left: -100px;
+        }
+        
+        .annotation.progress {
+            top: 70px;
+            left: 20px;
         }
         
         /* Back ribbon */
@@ -329,29 +478,28 @@
             top: 0;
             z-index: 1000;
         }
+        
         .back-ribbon a {
             color: #007bff;
             text-decoration: none;
             font-weight: bold;
         }
+        
         .back-ribbon a:hover {
             text-decoration: underline;
         }
         
         /* Responsive */
         @media (max-width: 768px) {
-            .sidebar {
-                width: 200px;
-            }
-            
             .chat-widget {
-                width: 280px;
-                height: 400px;
+                width: calc(100vw - 20px);
+                height: calc(100vh - 100px);
                 bottom: 10px;
                 right: 10px;
+                left: 10px;
             }
             
-            .matches-grid {
+            .sport-options {
                 grid-template-columns: 1fr;
             }
         }
@@ -360,7 +508,7 @@
 <body>
     <!-- Back Ribbon -->
     <div class="back-ribbon">
-        <a href="index.html">← Go back</a>
+        <a href="index.html">← Home</a>
     </div>
     
     <!-- Header -->
@@ -380,6 +528,9 @@
 
     <!-- Main Content -->
     <div class="main-content">
+        <!-- Background overlay to dim content -->
+        <div class="background-overlay"></div>
+        
         <!-- Sidebar -->
         <div class="sidebar wireframe-box">
             <div class="sidebar-section">
@@ -392,15 +543,6 @@
             
             <div class="sidebar-section">
                 <div class="sidebar-title"></div>
-                <div class="sidebar-item"></div>
-                <div class="sidebar-item"></div>
-                <div class="sidebar-item"></div>
-            </div>
-            
-            <div class="sidebar-section">
-                <div class="sidebar-title"></div>
-                <div class="sidebar-item"></div>
-                <div class="sidebar-item"></div>
                 <div class="sidebar-item"></div>
                 <div class="sidebar-item"></div>
                 <div class="sidebar-item"></div>
@@ -443,62 +585,15 @@
                         <div class="odds-button">2</div>
                     </div>
                 </div>
-                
-                <div class="match-card wireframe-box">
-                    <div class="match-info">
-                        <div class="teams"></div>
-                        <div class="match-time"></div>
-                    </div>
-                    <div class="odds-row">
-                        <div class="odds-button">1</div>
-                        <div class="odds-button">X</div>
-                        <div class="odds-button">2</div>
-                    </div>
-                </div>
-                
-                <div class="match-card wireframe-box">
-                    <div class="match-info">
-                        <div class="teams"></div>
-                        <div class="match-time"></div>
-                    </div>
-                    <div class="odds-row">
-                        <div class="odds-button">1</div>
-                        <div class="odds-button">X</div>
-                        <div class="odds-button">2</div>
-                    </div>
-                </div>
-                
-                <div class="match-card wireframe-box">
-                    <div class="match-info">
-                        <div class="teams"></div>
-                        <div class="match-time"></div>
-                    </div>
-                    <div class="odds-row">
-                        <div class="odds-button">1</div>
-                        <div class="odds-button">X</div>
-                        <div class="odds-button">2</div>
-                    </div>
-                </div>
-                
-                <div class="match-card wireframe-box">
-                    <div class="match-info">
-                        <div class="teams"></div>
-                        <div class="match-time"></div>
-                    </div>
-                    <div class="odds-row">
-                        <div class="odds-button">1</div>
-                        <div class="odds-button">X</div>
-                        <div class="odds-button">2</div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- AI Chat Widget -->
+    <!-- AI Chat Widget - Preference Collection -->
     <div class="chat-widget" id="chatWidget">
-        <div class="annotation chat-pos">Bottom Right Position</div>
-        <div class="annotation persistent">Persistent Widget</div>
+        <div class="annotation expanded">Expanded Widget</div>
+        <div class="annotation interactive">Interactive UI</div>
+        <div class="annotation progress">Progress Indicator</div>
         
         <div class="chat-header">
             <div class="chat-title">Betting Assistant</div>
@@ -509,25 +604,76 @@
         </div>
         
         <div class="chat-messages">
+            <!-- Progress indicator -->
+            <div class="progress-indicator">
+                <div class="progress-bar"></div>
+            </div>
+            
+            <!-- Agent welcome message -->
             <div class="message agent">
                 <div class="message-text long"></div>
+                <div class="message-text medium"></div>
                 <div class="message-text short"></div>
             </div>
             
-            <div class="message user">
-                <div class="message-text short"></div>
+            <!-- Preference Collection UI -->
+            <div class="preference-section">
+                <div class="preference-title"></div>
+                
+                <!-- Sport Selection -->
+                <div class="sport-options">
+                    <div class="sport-option selected" onclick="selectSport(this)">
+                        <div class="sport-icon"></div>
+                        <span>Football</span>
+                    </div>
+                    <div class="sport-option" onclick="selectSport(this)">
+                        <div class="sport-icon"></div>
+                        <span>Basketball</span>
+                    </div>
+                    <div class="sport-option" onclick="selectSport(this)">
+                        <div class="sport-icon"></div>
+                        <span>Tennis</span>
+                    </div>
+                    <div class="sport-option" onclick="selectSport(this)">
+                        <div class="sport-icon"></div>
+                        <span>Baseball</span>
+                    </div>
+                </div>
+                
+                <!-- Team Selection (shows after sport selection) -->
+                <div class="team-selection show" id="teamSelection">
+                    <div class="preference-title" style="width: 60%; margin-bottom: 10px;"></div>
+                    
+                    <input type="text" class="team-search" placeholder="Search teams...">
+                    
+                    <div class="team-options">
+                        <div class="team-option selected" onclick="selectTeam(this)">
+                            <div class="team-logo"></div>
+                            <div class="team-name"></div>
+                        </div>
+                        <div class="team-option" onclick="selectTeam(this)">
+                            <div class="team-logo"></div>
+                            <div class="team-name"></div>
+                        </div>
+                        <div class="team-option" onclick="selectTeam(this)">
+                            <div class="team-logo"></div>
+                            <div class="team-name"></div>
+                        </div>
+                        <div class="team-option" onclick="selectTeam(this)">
+                            <div class="team-logo"></div>
+                            <div class="team-name"></div>
+                        </div>
+                        <div class="team-option" onclick="selectTeam(this)">
+                            <div class="team-logo"></div>
+                            <div class="team-name"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="continue-button" onclick="continueToRecommendations()">
+                    Continue to Recommendations
+                </button>
             </div>
-            
-            <div class="message agent">
-                <div class="message-text long"></div>
-                <div class="message-text long"></div>
-                <div class="message-text short"></div>
-            </div>
-        </div>
-        
-        <div class="chat-input">
-            <input type="text" class="input-field" placeholder="Type your message...">
-            <button class="send-button">Send</button>
         </div>
     </div>
 
@@ -542,36 +688,47 @@
             widget.style.display = 'none';
         }
         
-        // Simulate chat widget behavior
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add click event to the Send button
-            const sendButton = document.querySelector('.send-button');
-            if (sendButton) {
-                sendButton.addEventListener('click', function() {
-                    window.location.href = '2-preference_collection.html';
-                });
-                
-                // Also trigger navigation when Enter key is pressed in the input field
-                const inputField = document.querySelector('.input-field');
-                if (inputField) {
-                    inputField.addEventListener('keypress', function(e) {
-                        if (e.key === 'Enter') {
-                            window.location.href = '2-preference_collection.html';
-                        }
-                    });
-                }
-            }
-            
-            // Add interaction hints
-            const matchCards = document.querySelectorAll('.match-card');
-            matchCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.backgroundColor = '#f0f0f0';
-                });
-                card.addEventListener('mouseleave', function() {
-                    this.style.backgroundColor = 'white';
-                });
+        function selectSport(sportElement) {
+            // Remove selected class from all sports
+            document.querySelectorAll('.sport-option').forEach(option => {
+                option.classList.remove('selected');
             });
+            
+            // Add selected class to clicked sport
+            sportElement.classList.add('selected');
+            
+            // Show team selection
+            document.getElementById('teamSelection').classList.add('show');
+            
+            // Update progress bar
+            document.querySelector('.progress-bar').style.width = '66%';
+        }
+        
+        function selectTeam(teamElement) {
+            // Remove selected class from all teams
+            document.querySelectorAll('.team-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked team
+            teamElement.classList.add('selected');
+            
+            // Enable continue button
+            document.querySelector('.continue-button').disabled = false;
+            
+            // Update progress bar
+            document.querySelector('.progress-bar').style.width = '100%';
+        }
+        
+        function continueToRecommendations() {
+            // Navigate to bet recommendations page
+            window.location.href = '3-bet_recommendations.html';
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Disable continue button initially
+            document.querySelector('.continue-button').disabled = true;
         });
     </script>
 </body>

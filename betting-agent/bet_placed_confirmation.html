@@ -100,13 +100,62 @@
         .back-ribbon a:hover {
             text-decoration: underline;
         }
+        .feedback-prompt {
+            background-color: #f0f7ff;
+            border: 1px solid #cce5ff;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .feedback-question {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #004085;
+        }
+        .feedback-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .feedback-button {
+            background: none;
+            border: 2px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .feedback-button:hover {
+            background-color: #e7f1ff;
+            transform: scale(1.1);
+        }
+        .feedback-button.thumbs-up {
+            color: #28a745;
+            border-color: #28a745;
+        }
+        .feedback-button.thumbs-down {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        .feedback-thank-you {
+            color: #28a745;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
         @media (max-width: 768px) {.sidebar {width: 200px;}}
     </style>
 </head>
 <body>
     <!-- Back Ribbon -->
     <div class="back-ribbon">
-        <a href="index.html">← Go back to Home</a>
+        <a href="index.html">← Home</a>
     </div>
     
     <!-- Header -->
@@ -178,6 +227,14 @@
             </div>
             <div class="message agent">
                 Your bet was placed! Click 'Track My Bet' to see its status. Need anything else? Just ask here.
+                <div class="feedback-prompt">
+                    <div class="feedback-question">How was your experience?</div>
+                    <div class="feedback-buttons">
+                        <button class="feedback-button thumbs-up" onclick="submitFeedback('positive')">👍</button>
+                        <button class="feedback-button thumbs-down" onclick="submitFeedback('negative')">👎</button>
+                    </div>
+                    <div class="feedback-thank-you" id="feedbackThankYou">Thank you for your feedback!</div>
+                </div>
             </div>
         </div>
         <div class="chat-input">
@@ -196,6 +253,70 @@
             const widget = document.getElementById('chatWidget');
             widget.style.display = 'none';
         }
+
+        // Feedback submission
+        function submitFeedback(type) {
+            // Here you would typically send the feedback to a server
+            console.log('Feedback submitted:', type);
+            
+            // Show thank you message
+            const thankYou = document.getElementById('feedbackThankYou');
+            thankYou.style.display = 'block';
+            
+            // Hide buttons
+            const buttons = document.querySelectorAll('.feedback-button');
+            buttons.forEach(button => {
+                button.style.display = 'none';
+            });
+            
+            // Hide the question
+            const question = document.querySelector('.feedback-question');
+            question.style.display = 'none';
+            
+            // Optionally, you could send this feedback to a server here
+            // Example: fetch('/api/feedback', { method: 'POST', body: JSON.stringify({ feedback: type }) });
+        }
+        
+        // Simulate chat widget behavior
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click event to the Send button
+            const sendButton = document.querySelector('.send-button');
+            const inputField = document.querySelector('.input-field');
+            const chatMessages = document.getElementById('chatMessages');
+            
+            function sendMessage() {
+                const message = inputField.value.trim();
+                if (message) {
+                    // Add user message
+                    const userMessage = document.createElement('div');
+                    userMessage.className = 'message user';
+                    userMessage.textContent = message;
+                    chatMessages.appendChild(userMessage);
+                    
+                    // Clear input
+                    inputField.value = '';
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    // Simulate agent response
+                    setTimeout(() => {
+                        const agentMessage = document.createElement('div');
+                        agentMessage.className = 'message agent';
+                        agentMessage.textContent = 'Thanks for your message! Is there anything else I can help you with?';
+                        chatMessages.appendChild(agentMessage);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 1000);
+                }
+            }
+            
+            sendButton.addEventListener('click', sendMessage);
+            inputField.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
     </script>
 </body>
 </html>
