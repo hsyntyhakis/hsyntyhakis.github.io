@@ -2,7 +2,7 @@
 const resumeData = {
   "personal_info": {
     "name": "Haris Syntyhakis",
-    "title": "Product Manager",
+    "title": "Senior Product Manager",
     "image": "/assets/images/profile.jpeg"
   },
   "summary": "Product Manager with a technical background, focused on AI-powered solutions. Skilled at driving cross-functional alignment and getting things done.",
@@ -34,7 +34,7 @@ const resumeData = {
       "period": "09/2025 – Present",
       "description": "A fast-growing SaaS company disrupting the $23B digital signage industry. Yodeck's affordable, easy-to-use solution powers over 180,000 screens across every type of business worldwide and is now in the top 3 of digital signage SaaS platforms in the world",
       "achievements": [],
-      "learnings": "0-to-1 product development • Digital signage industry • Enterprise B2B SaaS strategies"
+      "learnings": "App ecosystem development • Partner management • Engagement-based pricing strategies"
     },
     {
       "title": "Product Manager",
