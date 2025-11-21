@@ -28,6 +28,15 @@ const resumeData = {
   ],
   "experience": [
     {
+      "title": "Senior Product Manager",
+      "company": "Yodeck",
+      "location": "Athens, Greece",
+      "period": "09/2025 – Present",
+      "description": "A fast-growing SaaS company disrupting the $23B digital signage industry. Yodeck's affordable, easy-to-use solution powers over 180,000 screens across every type of business worldwide and is now in the top 3 of digital signage SaaS platforms in the world",
+      "achievements": [],
+      "learnings": "0-to-1 product development • Digital signage industry • Enterprise B2B SaaS strategies"
+    },
+    {
       "title": "Product Manager",
       "company": "Transifex",
       "location": "Covina, CA, USA (Remote)",
